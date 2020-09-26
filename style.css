@@ -1,0 +1,130 @@
+#container{
+    width: 97vw;
+    height: 97vh;
+    display: grid;
+    grid-template-rows: 8fr 1fr 1fr;
+}
+#board-container{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+#board-cell{
+    border: 1px solid black;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+.coin{
+    background-color: #fbc531;
+    border-radius: 50%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    padding-right: 10%;
+    padding-left: 10%;
+}
+.block{
+    background-color: #e84118;
+    width: 80%;
+    height: 80%;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+.player{
+    border-radius: 50%;
+    padding: 15%;
+}
+#player1{
+    background-color: #00a8ff;
+}
+#player2{
+    background-color: #4cd137;
+}
+#player3{
+    background-color: #7f8fa6;
+}
+#player4{
+    background-color: #353b48;
+}
+
+#inputs{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 3fr;
+    grid-gap: 1vw;
+}
+input{
+    border-radius: 10px;
+    text-align: center;
+    font-size: 2vw;
+    padding: 0px;
+    background-color: #353b48;
+    color: grey;
+}
+select{
+    border-radius: 10px;
+    text-align: center;
+    background-color: #353b48;
+    font-size: 2vw;
+    padding: 0px;
+    color: grey;
+}
+
+#start {
+	box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
+	background-color:#79bbff;
+	border-radius:6px;
+	border:1px solid #84bbf3;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #528ecc;
+}
+#start:hover {
+	background:linear-gradient(to bottom, #378de5 5%, #79bbff 100%);
+	background-color:#378de5;
+}
+#start:active {
+	position:relative;
+	top:1px;
+}
+#scores{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+.score{
+    font-size: 2.5vw;
+}
+#eror-msg{
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    height: 15vh;
+    width: 30vw;
+    border-radius: 30px;
+    color: white;
+    background-color: #e84118;
+    border: 1px solid #c23616;
+}
+#end-game-msg{
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    height: 15vh;
+    width: 30vw;
+    border-radius: 30px;
+    color: white;
+    background-color: #4cd137;
+    border: 1px solid #44bd32;
+    position: absolute;
+    margin-top: 20%;
+    margin-left: 35%; 
+}
