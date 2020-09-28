@@ -7,7 +7,6 @@ class Game {
         this.scorePlayer[3] = 0
         this.scorePlayer[4] = 0
         this.coinCounter = 0
-        //this.computerLocatinos = {}
     }
 
     print() {
@@ -25,7 +24,11 @@ class Game {
     }
 
     get(rowNum, colNum) {
-        return this.matrix[rowNum][colNum]
+        if (this.matrix[rowNum] && this.matrix[rowNum][colNum]) {
+            return this.matrix[rowNum][colNum]
+        } else {
+            return 0
+        }
     }
 
     getColumn(colNum) {
@@ -64,35 +67,29 @@ class Game {
         for (let i = 0; i < rowNum; i++) {
             let row = []
             for (let j = 0; j < colNum; j++) {
-                const randNum = Math.random()
-                if (randNum < 0.3) {
-                    row.push('c')
-                    this.coinCounter++
+                if (j === colNum - 1 && i === rowNum - 1) {
+                    row.push(1)
+                } else if (j === 0 && i === 0) {
+                    row.push(2)
+                } else if (numPlayers > 2 && i === 0 && j === colNum - 1) {
+                    row.push(3)
+                } else if (numPlayers > 3 && i === rowNum - 1 && j === 0) {
+                    row.push(4)
                 } else {
-                    if(randNum < 0.55){
-                        row.push('b')
-                    } else{
-                         row.push('.')
+                    const randNum = Math.random()
+                    if (randNum < 0.3) {
+                        row.push('c')
+                        this.coinCounter++
+                    } else {
+                        if (randNum < 0.55) {
+                            row.push('b')
+                        } else {
+                            row.push('.')
                         }
+                    }
                 }
             }
             newBoard.push(row)
-        }
-        if (newBoard[0][0] === 'c') {
-            this.coinCounter--
-        }
-        if (newBoard[rowNum - 1][colNum - 1] === 'c') {
-            this.coinCounter--
-        }
-        newBoard[rowNum - 1][colNum - 1] = 1
-        newBoard[0][0] = 2
-        if(numPlayers > 2){
-            newBoard[0][colNum - 1] === 'c' ? this.coinCounter-- : null
-            newBoard[0][colNum - 1] = 3
-            if(numPlayers > 3) {
-                newBoard[rowNum - 1][0] === 'c' ? this.coinCounter-- : null
-                newBoard[rowNum - 1][0] = 4           
-            }
         }
         this.matrix = newBoard
     }
@@ -102,9 +99,10 @@ class Game {
         const i = y
         const j = x
         direction === 'left' ? x-- : direction === 'right' ? x++ : direction === 'down' ? y++ : y--
-        if ((this.matrix[y] && this.matrix[y][x]) && (this.matrix[y][x] === '.' || this.matrix[y][x] === 'c')) {
-            if (this.matrix[y][x] === 'c') {
-                this.scorePlayer[playerNum] += 10 
+        const wantedPosition = this.get(y, x)
+        if ((wantedPosition) && (wantedPosition === '.' || wantedPosition === 'c')) {
+            if (wantedPosition === 'c') {
+                this.scorePlayer[playerNum] += 10
                 this.coinCounter--
             }
             this.alter(i, j, '.')
@@ -112,104 +110,121 @@ class Game {
         }
     }
 
-    // moveCompuetr() {
-    //     let { x, y } = this.findCoordinate(2)
-    //     x = parseInt(x)
-    //     y = parseInt(y)
-    //     console.log(x,y);
-    //     if(this.computerLocatinos[y] !== undefined && this.computerLocatinos[y][x] !== undefined){
-    //         this.computerLocatinos[y][x]++
-    //     }else{
-    //         this.computerLocatinos[y] = this.computerLocatinos[y] ? {[x]: 1} : {[x]: 1}
-    //     }
-    //     console.log(this.computerLocatinos);
-    //     const i = y
-    //     const j = x
-    //     if ((this.matrix[y][x+1]) && (this.matrix[y][x+1] === '.' || this.matrix[y][x+1] === 'c') && (!this.computerLocatinos[y] || !this.computerLocatinos[y][x+1] || this.computerLocatinos[y][x+1] < 3)) {
-    //         x++
-    //     }else if ((this.matrix[y+1] && this.matrix[y+1][x]) && (this.matrix[y+1][x] === '.' || this.matrix[y+1][x] === 'c') && (!this.computerLocatinos[y+1] || !this.computerLocatinos[y+1][x] || this.computerLocatinos[y+1][x] < 3)) {
-    //         y++
-    //     }else if ((this.matrix[y][x-1]) && (this.matrix[y][x-1] === '.' || this.matrix[y][x-1] === 'c') && (!this.computerLocatinos[y] || !this.computerLocatinos[y][x-1] || this.computerLocatinos[y][x-1] < 3)) {
-    //         x--
-    //     }else if ((this.matrix[y-1] && this.matrix[y-1][x]) && (this.matrix[y-1][x] === '.' || this.matrix[y-1][x] === 'c') && (!this.computerLocatinos[y-1] || !this.computerLocatinos[y-1][x] || this.computerLocatinos[y-1][x] < 3)) {
-    //         y--
-    //     }
-    //     if (this.matrix[y][x] === 'c') {
-    //         this.scorePlayer2 += 10
-    //         this.coinCounter--
-    //     }
-    //     this.alter(i, j, '.')
-    //     this.alter(y, x, 2)
-    // }
-
-    makeValidBoard() {
+    getBlocksLocations() {
         const blockArray = []
-        const blockMatrix = []
-        let pushed = false
         for (let y in this.matrix) {
             for (let x in this.matrix[y]) {
-                if (this.matrix[y][x] === 'b') {
+                if (this.get(y, x) === 'b') {
                     blockArray.push({ x: parseInt(x), y: parseInt(y) })
                 }
             }
         }
+        return blockArray
+    }
 
+    divideBlocksLocations(blockArray) {
+        const blockMatrix = []
+        let pushed = false
         for (let n of blockArray) {
-            for( let b in blockMatrix){
+            for (let b in blockMatrix) {
                 if (blockMatrix[b].some(num => Math.abs(num.x - n.x) < 2 && Math.abs(num.y - n.y) < 2)) {
-                    if(!pushed){
+                    if (!pushed) {
                         blockMatrix[b].push({ x: n.x, y: n.y })
                         pushed = true
-                    }else{
+                    } else {
                         const removed = blockMatrix.splice(b, 1)[0]
                         let arrayToPush
-                        removed.forEach(r=>{
-                            if(!arrayToPush){
+                        removed.forEach(r => {
+                            if (!arrayToPush) {
                                 arrayToPush = blockMatrix.find(b => b.some(o => Math.abs(o.x - r.x) < 2 && Math.abs(o.y - r.y) < 2))
                             }
-                    })
+                        })
                         arrayToPush.push(...removed)
                     }
-                } 
+                }
             }
-            if(!pushed){
+            if (!pushed) {
                 blockMatrix.push([{ x: n.x, y: n.y }])
             }
             pushed = false
         }
-        
-        let count = 0
-        for(let m of blockMatrix){
-            for(let n in m){
-                if(m[n].x === 0 || m[n].y === 0 || m[n].x === this.matrix[0].length-1 || m[n].y === this.matrix.length-1){
-                    count++
-                    count > 1 ? this.matrix[m[n].y][m[n].x] = '.' : null
-                }
-                if(n > 2){
-                    this.matrix[m[n].y][m[n].x] = '.'
-                }
-            }
-            count = 0
-        }
         return blockMatrix
     }
 
-    findWinner(){
-        let biggest = 1
-        let tied
-        for (let i = 2; i < 5; i++) {
-            if (this.scorePlayer[i] === this.scorePlayer[biggest] && this.scorePlayer[i] > 0) {
-                tied = biggest
+    makeValidBoard() {
+        const blockArray = this.getBlocksLocations()
+        const blockMatrix = this.divideBlocksLocations(blockArray)
+        let countBlocksIngroup = 0
+        let countTouchBorder = 0
+        for (let m of blockMatrix) {
+            for (let n of m) {
+                countBlocksIngroup++
+                if (n.x === 0 || n.y === 0 || n.x === this.matrix[0].length - 1 || n.y === this.matrix.length - 1) {
+                    countTouchBorder++
+                    countTouchBorder > 1 ? this.alter(n.y, n.x, '.') : null
+                }
+                if (countBlocksIngroup > 3) {
+                    this.alter(n.y, n.x, '.')
+                }
             }
-            if (this.scorePlayer[i] > this.scorePlayer[biggest]) {
+            countBlocksIngroup = 0
+            countTouchBorder = 0
+        }
+    }
+
+    findWinner() {
+        let biggest = 1
+        let tied = 0
+        for (let i = 2; i < 5; i++) {
+            if (this.scorePlayer[i] === this.scorePlayer[biggest]) {
+                tied = biggest
+            } else if (this.scorePlayer[i] > this.scorePlayer[biggest]) {
                 biggest = i
             }
         }
-        if (!tied || tied !== biggest) {
+        if (tied !== biggest) {
             return biggest
         } else {
             return -1
         }
+    }
+
+    moveCompuetr() {
+        let { x, y } = this.findCoordinate(2)
+        x = parseInt(x)
+        y = parseInt(y)
+        let optionalDirections = []
+        if (this.get(y, x + 1) === 'c') {
+            this.movePlayer(2, 'right')
+            return
+        }
+        if (this.get(y, x - 1) === 'c') {
+            this.movePlayer(2, 'left')
+            return
+        }
+        if (this.get(y - 1, x) === 'c') {
+            this.movePlayer(2, 'up')
+            return
+        }
+        if (this.get(y + 1, x) === 'c') {
+            this.movePlayer(2, 'down')
+            return
+        }
+        if (this.get(y, x + 1) === '.') {
+            optionalDirections.push('right')
+        }
+        if (this.get(y, x - 1) === '.') {
+            optionalDirections.push('left')
+        }
+        if (this.get(y - 1, x) === '.') {
+            optionalDirections.push('up')
+        }
+        if (this.get(y + 1, x) === '.') {
+            optionalDirections.push('down')
+        }
+        const randomLocation = Math.floor(Math.random() * optionalDirections.length)
+        const direction = optionalDirections[randomLocation]
+        this.movePlayer(2, direction)
     }
 
 }

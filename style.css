@@ -10,10 +10,13 @@
     display: grid;
     align-items: center;
     justify-items: center;
+    grid-gap: 0.5vw;
 }
 #board-cell{
     border: 1px solid black;
     display: grid;
+    width: 100%;
+    height: 100%;
     justify-items: center;
     align-items: center;
 }
@@ -27,8 +30,8 @@
 }
 .block{
     background-color: #e84118;
-    width: 80%;
-    height: 80%;
+    width: 100%;
+    height: 100%;
     display: grid;
     justify-items: center;
     align-items: center;
@@ -47,7 +50,7 @@
     background-color: #7f8fa6;
 }
 #player4{
-    background-color: #353b48;
+    background-color: #e67e22;
 }
 
 #inputs{
@@ -99,9 +102,30 @@ select{
 #scores{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    justify-items: center;
 }
 .score{
     font-size: 2.5vw;
+    color: white;
+    width: 20vw;
+    height: 5vh;
+    border-radius: 20px;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+.player1{
+    background-color: #00a8ff;
+}
+.player2{
+    background-color: #4cd137;
+}
+.player3{
+    background-color: #7f8fa6;
+}
+.player4{
+    background-color: #e67e22;
 }
 #eror-msg{
     display: grid;
@@ -122,8 +146,6 @@ select{
     width: 30vw;
     border-radius: 30px;
     color: white;
-    background-color: #4cd137;
-    border: 1px solid #44bd32;
     position: absolute;
     margin-top: 20%;
     margin-left: 35%; 
