@@ -9,15 +9,6 @@ class Game {
         this.coinCounter = 0
     }
 
-    print() {
-        for (let r of this.matrix) {
-            let row = ''
-            for (let c of r) {
-                row += "\t" + c
-            }
-            console.log(row);
-        }
-    }
 
     alter(rowNum, colNum, num) {
         this.matrix[rowNum][colNum] = num
@@ -29,22 +20,6 @@ class Game {
         } else {
             return 0
         }
-    }
-
-    getColumn(colNum) {
-        const column = []
-        for (let i = 0; i < this.matrix.length; i++) {
-            column.push(this.matrix[i][colNum])
-        }
-        return column
-    }
-
-    getRow(rowNum) {
-        const row = []
-        for (let i of this.matrix[rowNum]) {
-            row.push(i);
-        }
-        return row
     }
 
     findCoordinate(value) {

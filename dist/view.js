@@ -9,7 +9,13 @@ class Renderer {
         const player4 = '<div id="player4" class="player"></div>'
         for (let i of matrix) {
             for (let j of i) {
-                const content = j === 'c' ? coin : j === 'b' ? block : j === 1 ? player1 : j === 2 ? player2 : j === 3 ? player3 : j === 4 ? player4 : ''
+                const content = j === 'c' ? 
+                coin : j === 'b' ? 
+                block : j === 1 ? 
+                player1 : j === 2 ? 
+                player2 : j === 3 ? 
+                player3 : j === 4 ? 
+                player4 : ''
                 $('#board-container').append(`<div id="board-cell">${content}</div>`)
             }
         }
