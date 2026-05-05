@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Gold Rush Game</title>
+</head>
+<body>
+
+    <div id="container">
+        <div id="board-container"></div>
+        <div id='scores'></div>
+        <div id="inputs">
+            <input type="text" id="rows" placeholder="rows">
+            <input type="text" id="columns" placeholder="columns">
+            <select id="num-players">
+                <option value="1">1 player</option>
+                <option value="2">2 players</option>
+                <option value="3">3 players</option>
+                <option value="4">4 players</option>
+                <option value="-1">Online</option>
+            </select>
+            <button id="start">Start</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+    <script src="/jquery/dist/jquery.js"></script>
+    <script src="/handlebars/dist/handlebars.js"></script>
+    <script src="logic.js"></script>
+    <script src="view.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
